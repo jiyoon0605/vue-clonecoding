@@ -10,11 +10,11 @@ import {Component, Prop, Vue} from "vue-property-decorator";
 @Component
 export default class WarningMessage extends Vue {
   @Prop() private readonly keyName: any;
-  @Prop() private readonly visible: boolean;
-  @Prop() private readonly message: string;
+  @Prop() private readonly visible: boolean | undefined;
+  @Prop() private readonly message: string | undefined;
 
   onCloseWarningMessage() {
-    this.$emit("onCloseWarningMessage",this.keyName);
+    this.$emit("onCloseWarningMessage", this.keyName);
   }
 }
 </script>

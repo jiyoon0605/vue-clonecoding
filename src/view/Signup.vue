@@ -16,7 +16,7 @@
             <el-button slot='append' type='primary' @click='checkIdDuplicated' round>중복확인</el-button>
           </el-input>
           <WarningMessage
-              @onCloseWarningMessage='onCloseWarningMessage'
+              @onCloseWarningMessage='closeWarningMessage'
               :keyName='inputForm.id.keyName'
               :message='inputForm.id.warningMessage'
               :visible='inputForm.id.warningMessageVisible'></WarningMessage>
@@ -34,12 +34,11 @@
                     :class='{wrong:inputForm.passwordConfirm.warningMessageVisible}'>
           </el-input>
           <WarningMessage
-              @onCloseWarningMessage='onCloseWarningMessage'
+              @onCloseWarningMessage='closeWarningMessage'
               :keyName='inputForm.passwordConfirm.keyName'
               :message='inputForm.passwordConfirm.warningMessage'
               :visible='inputForm.passwordConfirm.warningMessageVisible'></WarningMessage>
         </el-form-item>
-
 
         <!--학생여부-->
         <el-form-item label='학생인가요?'>
@@ -169,7 +168,7 @@ export default class Signup extends Vue {
 
   getPurposes() {
     SignupApi.getUserPurpose().then(({purposes}) => {
-      this.purposes = JSON.parse((JSON.stringify(purposes)));
+      this.purposes = purposes;
     });
   }
 
@@ -206,7 +205,6 @@ export default class Signup extends Vue {
   }
 
   onIdInput(value: string) {
-    this.isItDuplicateId = false;
     this.inputForm = {
       ...this.inputForm,
       id: {
@@ -230,7 +228,7 @@ export default class Signup extends Vue {
     }
   }
 
-  onCloseWarningMessage(keyName) {
+  closeWarningMessage(keyName: string) {
     this.inputForm = {
       ...this.inputForm,
       [keyName]: {
@@ -239,7 +237,6 @@ export default class Signup extends Vue {
       }
     }
   }
-
 }
 </script>
 <style>
