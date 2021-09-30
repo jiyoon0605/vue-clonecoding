@@ -117,7 +117,7 @@ export default class Signup extends Vue {
     if (!this.isPasswordSame) {
       this.$message.error("Passwords do not match");
     }
-    if(!this.isItDuplicateId){
+    else if(!this.isItDuplicateId){
       this.$message.error("Please check your ID");
     }
     else {

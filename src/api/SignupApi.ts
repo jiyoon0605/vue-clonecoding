@@ -2,8 +2,6 @@ import {SignupFormData, SignupResult, UserPurposeResponse} from '@/models/Signup
 
 
 export default class SignupApi {
-    constructor() {
-    }
 
     public static checkId(id: string): Promise<null> {
         return new Promise((res, rej) => {
