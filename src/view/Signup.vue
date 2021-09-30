@@ -1,8 +1,11 @@
 <template>
   <el-container class='container'>
     <el-header>
-      Sign Up
+      <h2>
+        Sign Up
+      </h2>
     </el-header>
+
     <el-card class='box-card'>
       <el-form size='mini' :model='inputForm'>
         <!--이름-->
@@ -16,7 +19,7 @@
             <el-button slot='append' type='primary' @click='checkIdDuplicated' round>중복확인</el-button>
           </el-input>
           <WarningMessage
-              @onCloseWarningMessage='closeWarningMessage'
+              @closeWarningMessage='closeWarningMessage'
               :keyName='inputForm.id.keyName'
               :message='inputForm.id.warningMessage'
               :visible='inputForm.id.warningMessageVisible'></WarningMessage>
@@ -34,7 +37,7 @@
                     :class='{wrong:inputForm.passwordConfirm.warningMessageVisible}'>
           </el-input>
           <WarningMessage
-              @onCloseWarningMessage='closeWarningMessage'
+              @closeWarningMessage='closeWarningMessage'
               :keyName='inputForm.passwordConfirm.keyName'
               :message='inputForm.passwordConfirm.warningMessage'
               :visible='inputForm.passwordConfirm.warningMessageVisible'></WarningMessage>
@@ -85,7 +88,6 @@ import WarningMessage from '@/components/message/WarningMessage.vue';
              }
            })
 export default class Signup extends Vue {
-
   inputForm: any = {
     username: {
       value: '',
@@ -243,7 +245,7 @@ export default class Signup extends Vue {
 
 
 .container {
-  margin-top: 100px;
+  margin: 100px 0;
   display: flex;
   align-items: center;
 }

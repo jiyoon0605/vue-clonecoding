@@ -1,7 +1,9 @@
 <template>
-  <div class="warning-message-container" :class="{invisible:!visible}">
-    <span class="warning-message">{{ message }}</span>
-    <el-button class="warning-closeBtn" type="danger" icon="el-icon-close" @click="onCloseWarningMessage"></el-button>
+  <div class="warning-message-container">
+    <div class="warning-message-box" :class="{invisible:!visible}">
+      <span class="warning-message">{{ message }}</span>
+      <el-button class="warning-closeBtn" type="danger" icon="el-icon-close" @click="closeWarningMessage"></el-button>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -13,8 +15,8 @@ export default class WarningMessage extends Vue {
   @Prop() private readonly visible: boolean | undefined;
   @Prop() private readonly message: string | undefined;
 
-  onCloseWarningMessage() {
-    this.$emit("onCloseWarningMessage", this.keyName);
+  closeWarningMessage() {
+    this.$emit("closeWarningMessage", this.keyName);
   }
 }
 </script>
@@ -33,7 +35,7 @@ export default class WarningMessage extends Vue {
 }
 
 .invisible {
-  visibility: hidden;
+  display: none;
 }
 
 .warning-closeBtn {
