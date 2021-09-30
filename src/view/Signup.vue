@@ -90,20 +90,20 @@ import WarningMessage from '@/components/message/WarningMessage.vue';
 export default class Signup extends Vue {
   inputForm: any = {
     username: {
-      value: '',
+      value: null
     },
     id: {
       keyName: 'id',
-      value: '',
+      value: null,
       warningMessage: '',
       warningMessageVisible: false,
     },
     password: {
-      value: ''
+      value: null
     },
     passwordConfirm: {
       keyName: 'passwordConfirm',
-      value: '',
+      value: null,
       warningMessage: 'Passwords do not match',
       warningMessageVisible: false,
     },
@@ -145,7 +145,7 @@ export default class Signup extends Vue {
                this.availableId = true
                this.$message({
                                message: 'Available Id.',
-                               type: 'success'
+                               type: 'success',
                              })
                this.inputForm = {
                  ...this.inputForm,
@@ -185,16 +185,18 @@ export default class Signup extends Vue {
 
     const {username, id, password, isStudent, schoolYears, purposes, gender} = this.inputForm;
     const submitForm: SignupFormData = {
-      username: username.value,
-      id: id.value,
-      password: password.value,
-      isStudent: isStudent.value,
-      admissionDay: schoolYears.value[0],
-      graduatedDay: schoolYears.value[1],
-      checkedPurPose: purposes.value,
-      gender: gender.value
+      username: username?.value,
+      id: id?.value,
+      password: password?.value,
+      isStudent: isStudent?.value,
+      admissionDay: schoolYears?.value[0],
+      graduatedDay: schoolYears?.value[1],
+      checkedPurPose: purposes.value.length > 0 ? purposes.value : null,
+      gender: gender?.value
     };
-    SignupApi.signUp(submitForm).then((e: SignupResult) => {
+
+    SignupApi.signUp(submitForm)
+             .then((e: SignupResult) => {
                this.$message({
                                message: e.message,
                                type: 'success'

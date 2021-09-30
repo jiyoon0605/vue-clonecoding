@@ -21,6 +21,7 @@ export default class SignupApi {
     public static signUp(data: SignupFormData): Promise<SignupResult> {
         return new Promise<SignupResult>((res, rej) => {
             for (const key in data) {
+                console.log(key, !data[key], data[key]);
                 (!(typeof data[key] === 'boolean') && !data[key]) && rej({
                                                                              result: 'failure',
                                                                              message: `${key} is required`
