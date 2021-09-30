@@ -28,7 +28,7 @@
         <!-- 비빌번호 확인-->
         <el-form-item label="비밀번호 확인">
           <el-input size="medium" show-password :value="inputForm.passwordConfirm.value" @input="onCheckPassword"
-                    :class="{wrong:!isPasswordSame}">
+                    :class="{wrong:inputForm.passwordConfirm.warningMessageVisible}">
           </el-input>
           <WarningMessage :message="inputForm.passwordConfirm.warningMessage"
                           :visible='inputForm.passwordConfirm.warningMessageVisible'></WarningMessage>
@@ -37,18 +37,19 @@
 
         <!--학생여부-->
         <el-form-item label="학생인가요?">
-          <el-switch v-model="submitForm.isStudent"></el-switch>
+          <el-switch v-model="inputForm.isStudent.value"></el-switch>
         </el-form-item>
 
         <!-- 재학기간-->
         <el-form-item label="재학기간">
           <el-date-picker type="daterange" range-separator="To" start-placeholder="입학일"
-                          end-placeholder="졸업(예정)일" v-model="schoolYears"></el-date-picker>
+                          end-placeholder="졸업(예정)일" :value="inputForm.schoolYears.value"
+                          @input="divideDate"></el-date-picker>
 
           <!--가입목적-->
         </el-form-item>
         <el-form-item label="목적">
-          <el-checkbox-group v-model="submitForm.checkedPurPose">
+          <el-checkbox-group v-model="inputForm.purposes.value">
             <el-checkbox v-for="(purpose,index) of purposes" :label="purpose" :key="index">{{ purpose }}
             </el-checkbox>
           </el-checkbox-group>
@@ -56,8 +57,8 @@
 
         <!--성별-->
         <el-form-item label="성별">
-          <el-radio v-model="submitForm.gender" label="1">남성</el-radio>
-          <el-radio v-model="submitForm.gender" label="2">여성</el-radio>
+          <el-radio v-model="inputForm.gender.value" label="1">남성</el-radio>
+          <el-radio v-model="inputForm.gender.value" label="2">여성</el-radio>
         </el-form-item>
 
         <!--가입-->
@@ -96,42 +97,36 @@ export default class Signup extends Vue {
       warningMessage: "Passwords do not match",
       warningMessageVisible: false,
     },
-    isStudent:{
-      value:false
+    isStudent: {
+      value: false
+    },
+    schoolYears: {
+      value: null
+    },
+    purposes: {
+      value: []
+    },
+    gender: {
+      value: 0
     }
+
   }
-  private submitForm: SignupFormData = {
-    username: "",
-    id: "",
-    password: "",
-    passwordConfirm: "",
-    isStudent: false,
-    admissionDay: new Date(),
-    graduatedDay: new Date(),
-    checkedPurPose: [],
-    gender: 0
-  }
+
   private availableId = false;
   private availablePassword = false;
-  private shcoolyears: Date[] = [];
   private purposes: string[] = [];
 
   public mounted() {
     this.getPurposes();
   }
 
-  get isPasswordSame() {
-    return this.submitForm.password === this.submitForm.passwordConfirm;
-  }
-
-  get schoolYears() {
-    return this.shcoolyears;
-  }
-
-  set schoolYears(e: any) {
-    this.shcoolyears = JSON.parse((JSON.stringify(e)));
-    this.submitForm.admissionDay = e[0];
-    this.submitForm.graduatedDay = e[1];
+  divideDate(e: any) {
+    this.inputForm = {
+      ...this.inputForm,
+      schoolYears: {
+        value: e
+      }
+    }
   }
 
   checkIdDuplicated() {
@@ -170,22 +165,35 @@ export default class Signup extends Vue {
   }
 
   onSubmit() {
-    if (!this.isPasswordSame) {
-      this.$message.error("Passwords do not match");
-    } else if (!this.isItDuplicateId) {
+    if (!this.availableId) {
       this.$message.error("Please check your ID");
-    } else {
-      SignupApi.signUp(this.submitForm).then((e: SignupResult) => {
-                 this.$message({
-                                 message: e.message,
-                                 type: "success"
-                               })
-               })
-               .catch((e: SignupResult) => {
-                 this.$message.error((e.message));
-                 this.submitForm.id = "";
-               })
+      return
+    } else if (!this.availablePassword) {
+      this.$message.error("Passwords do not match");
+      return;
     }
+
+    const {username, id, password, isStudent, schoolYears, purposes, gender} = this.inputForm;
+    const submitForm: SignupFormData = {
+      username: username.value,
+      id: id.value,
+      password: password.value,
+      isStudent: isStudent.value,
+      admissionDay: schoolYears.value[0],
+      graduatedDay: schoolYears.value[1],
+      checkedPurPose: purposes.value,
+      gender: gender.value
+    };
+    SignupApi.signUp(submitForm).then((e: SignupResult) => {
+               this.$message({
+                               message: e.message,
+                               type: "success"
+                             })
+             })
+             .catch((e: SignupResult) => {
+               this.$message.error((e.message));
+             })
+
   }
 
   onIdInput(value: string) {
@@ -201,7 +209,6 @@ export default class Signup extends Vue {
   }
 
   onCheckPassword(value: string) {
-    console.log(value, this.inputForm.password.value)
     this.availablePassword = value === this.inputForm.password.value;
     this.inputForm = {
       ...this.inputForm,
@@ -238,8 +245,7 @@ label {
   width: 100% !important;
 }
 
-
-.wrong {
+.wrong > input {
   border: 1px solid #F56C6C;
 }
 </style>

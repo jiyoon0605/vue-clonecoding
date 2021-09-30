@@ -21,14 +21,14 @@ export default class SignupApi {
     public static signUp(data: SignupFormData): Promise<SignupResult> {
         return new Promise<SignupResult>((res, rej) => {
             for (const key in data) {
-                (data[key] !== 'isStudent' && !data[key]) && rej({
-                                                                     result: 'failure',
-                                                                     message: `${key} is required`
-                                                                 })
+                (!(typeof data[key] === 'boolean') && !data[key]) && rej({
+                                                                             result: 'failure',
+                                                                             message: `${key} is required`
+                                                                         })
             }
             res({
                     result: 'success',
-                    message: 'account created successful'
+                    message: `Welcome ${data.username}!`
                 });
         })
     }

@@ -8,7 +8,6 @@ export interface SignupFormData {
     username: string,
     id: string,
     password: string,
-    passwordConfirm: string,
     isStudent: boolean,
     admissionDay: Date,
     graduatedDay: Date,
