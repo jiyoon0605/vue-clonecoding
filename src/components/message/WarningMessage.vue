@@ -18,12 +18,12 @@ import {WarningMessageData} from '@/models/SignupModel';
 @Component
 export default class WarningMessage extends Vue {
   @Prop({
-          default: {
+          default: () => ({
             visible: false,
             keyName: '',
             message: '',
             closed: false
-          }
+          })
         }) private readonly warningMessageData: WarningMessageData;
 
 

@@ -11,6 +11,7 @@
         <!--이름-->
         <el-form-item label="이름">
           <el-input size="medium" v-model="inputForm.username.value"></el-input>
+          <WarningMessage></WarningMessage>
         </el-form-item>
 
         <!-- 아이디-->
