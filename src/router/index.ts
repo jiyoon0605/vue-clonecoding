@@ -1,5 +1,5 @@
 import VueRouter, {RouteConfig} from 'vue-router';
-import Signup from '@/view/Signup.vue';
+import Signup from '@/view/Signin.vue';
 import Vue from 'vue';
 
 Vue.use(VueRouter);

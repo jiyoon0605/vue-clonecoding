@@ -7,7 +7,7 @@ import zh from '@/plugins/i18n/zh';
 
 Vue.use(VueI18n);
 
-const message = {
+const messages = {
     en,
     ko,
     ja,
@@ -17,8 +17,7 @@ const message = {
 const i18n =
     new VueI18n({
                     locale: 'en',
-                    fallbackLocale: 'en',
-                    messages: message
+                    messages
                 });
 
 export default i18n;
