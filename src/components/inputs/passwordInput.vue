@@ -18,7 +18,7 @@ export default class PasswordInput extends Vue {
   @Prop({default: () => ''}) private readonly inputValue: string;
 
   onChangeInput(value: string) {
-    this.$emit("onChangeIdInput", value);
+    this.$emit("onChangePasswordInput", value);
   }
 }
 </script>

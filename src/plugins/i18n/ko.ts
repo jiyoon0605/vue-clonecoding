@@ -1,6 +1,6 @@
 const ko = {
-    id: 'USER ID',
-    password: 'PASSWORD',
+    id: '아이디',
+    password: '비밀번호',
     findPassword: 'Find Password',
     signIn: 'Sign In',
     system: 'SYSTEM ACCESS',

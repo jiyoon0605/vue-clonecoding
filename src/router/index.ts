@@ -7,15 +7,19 @@ Vue.use(VueRouter);
 const routes: RouteConfig[] = [
     {
         name: "SignUp",
-        path: "/",
-        component: Signup
-    }
+        path: "/:lang",
+        component: Signup,
+        props: true
+    },
 ];
 
 
-
 const router = new VueRouter({
+                                 mode: "history",
                                  routes
                              });
+
+// router.beforeEach((to, from, next) => {
+// });
 
 export default router;
