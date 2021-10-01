@@ -1,4 +1,5 @@
 export interface submitForm {
-    id: string,
+    language: string,
+    userId: string,
     password: string
 }

@@ -6,8 +6,8 @@ Vue.use(VueRouter);
 
 const routes: RouteConfig[] = [
     {
-        name: "SignUp",
-        path: "/:lang",
+        name: 'SignIn',
+        path: '/:lang',
         component: Signup,
         props: true
     },
@@ -19,7 +19,5 @@ const router = new VueRouter({
                                  routes
                              });
 
-// router.beforeEach((to, from, next) => {
-// });
 
 export default router;

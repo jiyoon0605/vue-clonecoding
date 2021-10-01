@@ -1,6 +1,8 @@
 <template>
   <el-container direction="vertical" class="login">
-    <el-header>Safety R3</el-header>
+    <el-header>
+      <router-link :to="{name:'SignIn',params:{lang:$route.params.lang}}"> Safety R3</router-link>
+    </el-header>
     <el-form>
       <h2>Sign In</h2>
       <el-form-item :label="$tc('id')">
@@ -15,7 +17,7 @@
 
       </el-form-item>
       <el-form-item>
-        <el-button class="textBtn">{{ $tc('signIn') }}</el-button>
+        <el-button class="textBtn" @click="onSubmit">{{ $tc('signIn') }}</el-button>
       </el-form-item>
     </el-form>
     <div>
@@ -41,10 +43,12 @@
 
 <script lang="ts">
 
-import {Component, Vue} from "vue-property-decorator";
+import {Component, Vue, Watch} from "vue-property-decorator";
 import EmailInput from "@/components/inputs/IdInput.vue";
 import IconText from '@/components/icon/IconText.vue';
 import PasswordInput from '@/components/inputs/passwordInput.vue';
+import {submitForm} from '@/models/SigninModel';
+import {authentication} from '@/api/SigninApi'
 
 @Component({
              components: {
@@ -76,25 +80,31 @@ export default class Signup extends Vue {
     password: ''
   }
 
-  mounted() {
-    this.$root.$i18n.locale = this.$route.params.lang;
-    console.log(this.$tc('id'));
-  }
 
   get currentLang() {
     const {lang} = this.$route.params;
     return lang;
   }
 
+  @Watch('$route')
+  protected watchRoute() {
+    this.$root.$i18n.locale = this.$route.params.lang;
+  }
 
   onChangeLanguage(value: string) {
-    this.$router.push({name: "SignUp", params: {lang: value}});
-    this.$router.go();
+    this.$router.push({name: "SignIn", params: {lang: value}});
   }
 
-  refreshPage() {
-    this.$route.go();
+  onSubmit() {
+    const submitData: submitForm = {
+      userId: this.inputForm.id,
+      password: this.inputForm.password,
+      language: this.$route.params.lang
+    }
+
+    authentication(submitData);
   }
+
 
   onChangeId(value: string) {
     this.inputForm = {
