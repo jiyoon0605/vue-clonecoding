@@ -1,82 +1,79 @@
 <template>
-  <el-container class='container'>
+  <el-container class="container">
     <el-header>
       <h2>
         Sign Up
       </h2>
     </el-header>
 
-    <el-card class='box-card'>
-      <el-form size='mini' :model='inputForm'>
+    <el-card class="box-card">
+      <el-form size="mini" :model="inputForm">
         <!--이름-->
-        <el-form-item label='이름'>
-          <el-input size='medium' v-model='inputForm.username.value'></el-input>
+        <el-form-item label="이름">
+          <el-input size="medium" v-model="inputForm.username.value"></el-input>
         </el-form-item>
 
         <!-- 아이디-->
-        <el-form-item label='아이디'>
-          <el-input size='medium' :value='inputForm.id.value' @input='onIdInput'>
-            <el-button slot='append' type='primary' @click='checkIdDuplicated' round>중복확인</el-button>
+        <el-form-item label="아이디">
+          <el-input size="medium" :value="inputForm.id.value" @input="onCheckId">
+            <el-button slot="append" type="primary" @click="checkIdDuplicated" round>중복확인</el-button>
           </el-input>
           <WarningMessage
-              @closeWarningMessage='closeWarningMessage'
-              :keyName='inputForm.id.keyName'
-              :message='inputForm.id.warningMessage'
-              :visible='inputForm.id.warningMessageVisible'></WarningMessage>
+              :warningMessageData="idWarningMessageData"
+              @closeWarningMessage="closeWarningMessage"></WarningMessage>
         </el-form-item>
 
         <!-- 비밀번호-->
-        <el-form-item label='비밀번호'>
-          <el-input size='medium' show-password v-model='inputForm.password.value'>
+        <el-form-item label="비밀번호">
+          <el-input size="medium" show-password v-model="inputForm.password.value">
           </el-input>
         </el-form-item>
 
         <!-- 비빌번호 확인-->
-        <el-form-item label='비밀번호 확인'>
-          <el-input size='medium' show-password :value='inputForm.passwordConfirm.value' @input='onCheckPassword'
-                    :class='{wrong:inputForm.passwordConfirm.warningMessageVisible}'>
+        <el-form-item label="비밀번호 확인">
+          <el-input size="medium" :class="passwordConfirmClassName"
+                    :value="inputForm.passwordConfirm.value" @input="onCheckPassword"
+                    show-password>
           </el-input>
           <WarningMessage
-              @closeWarningMessage='closeWarningMessage'
-              :keyName='inputForm.passwordConfirm.keyName'
-              :message='inputForm.passwordConfirm.warningMessage'
-              :visible='inputForm.passwordConfirm.warningMessageVisible'></WarningMessage>
+              :warningMessageData="passwordWarningMessageData"
+              @closeWarningMessage="closeWarningMessage"></WarningMessage>
         </el-form-item>
 
         <!--학생여부-->
-        <el-form-item label='학생인가요?'>
-          <el-switch v-model='inputForm.isStudent.value'></el-switch>
+        <el-form-item label="학생인가요?">
+          <el-switch v-model="inputForm.isStudent.value"></el-switch>
         </el-form-item>
 
         <!-- 재학기간-->
-        <el-form-item label='재학기간'>
-          <el-date-picker type='daterange' range-separator='To' start-placeholder='입학일'
-                          end-placeholder='졸업(예정)일' :value='inputForm.schoolYears.value'
-                          @input='divideDate'></el-date-picker>
+        <el-form-item label="재학기간">
+          <el-date-picker type="daterange" range-separator="To" start-placeholder="입학일"
+                          end-placeholder="졸업(예정)일" :value="inputForm.schoolYears.value"
+                          @input="divideDate"></el-date-picker>
 
           <!--가입목적-->
         </el-form-item>
-        <el-form-item label='목적'>
-          <el-checkbox-group v-model='inputForm.purposes.value'>
-            <el-checkbox v-for='(purpose,index) of purposes' :label='purpose' :key='index'>{{ purpose }}
+        <el-form-item label="목적">
+          <el-checkbox-group v-model="inputForm.purposes.value">
+            <el-checkbox v-for="(purpose,index) of purposes" :label="purpose" :key="index">{{ purpose }}
             </el-checkbox>
           </el-checkbox-group>
         </el-form-item>
 
         <!--성별-->
-        <el-form-item label='성별'>
-          <el-radio v-model='inputForm.gender.value' label='1'>남성</el-radio>
-          <el-radio v-model='inputForm.gender.value' label='2'>여성</el-radio>
+        <el-form-item label="성별">
+          <el-radio v-model="inputForm.gender.value" label="1">남성</el-radio>
+          <el-radio v-model="inputForm.gender.value" label="2">여성</el-radio>
         </el-form-item>
 
         <!--가입-->
-        <el-button @click='onSubmit'>가입하기</el-button>
+        <el-button @click="onSubmit">가입하기</el-button>
 
       </el-form>
     </el-card>
   </el-container>
 </template>
-<script lang='ts'>
+<script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import {SignupFormData, SignupResult} from '@/models/SignupModel';
 import SignupApi from '@/api/SignupApi';
@@ -90,28 +87,30 @@ import WarningMessage from '@/components/message/WarningMessage.vue';
 export default class Signup extends Vue {
   inputForm: any = {
     username: {
-      value: null
+      value: ''
     },
     id: {
       keyName: 'id',
-      value: null,
-      warningMessage: '',
-      warningMessageVisible: false,
+      value: '',
+      warningMessage: 'Please Duplicate Check Your Id',
+      warningMessageVisible: true,
+      closed: false,
     },
     password: {
-      value: null
+      value: ''
     },
     passwordConfirm: {
       keyName: 'passwordConfirm',
-      value: null,
+      value: '',
       warningMessage: 'Passwords do not match',
       warningMessageVisible: false,
+      closed: false,
     },
     isStudent: {
       value: false
     },
     schoolYears: {
-      value: null
+      value: []
     },
     purposes: {
       value: []
@@ -128,6 +127,29 @@ export default class Signup extends Vue {
 
   public mounted() {
     this.getPurposes();
+  }
+
+
+  get idWarningMessageData() {
+    return this.getWarningMessageData(this.inputForm.id);
+  }
+
+  get passwordWarningMessageData() {
+    return this.getWarningMessageData(this.inputForm.passwordConfirm);
+  }
+
+  get passwordConfirmClassName() {
+    return {wrong: this.inputForm.passwordConfirm.warningMessageVisible}
+  }
+
+  getWarningMessageData(source: any) {
+    const {keyName, warningMessageVisible, warningMessage, closed} = source;
+    return {
+      keyName,
+      visible: warningMessageVisible,
+      message: warningMessage,
+      closed
+    }
   }
 
   divideDate(e: any) {
@@ -151,7 +173,8 @@ export default class Signup extends Vue {
                  ...this.inputForm,
                  id: {
                    ...this.inputForm.id,
-                   warningMessageVisible: false
+                   warningMessageVisible: false,
+                   closed: false,
                  }
                }
              })
@@ -191,7 +214,7 @@ export default class Signup extends Vue {
       isStudent: isStudent?.value,
       admissionDay: schoolYears?.value[0],
       graduatedDay: schoolYears?.value[1],
-      checkedPurPose: purposes.value.length > 0 ? purposes.value : null,
+      purposes: purposes.value.length > 0 ? purposes.value : null,
       gender: gender?.value
     };
 
@@ -208,17 +231,6 @@ export default class Signup extends Vue {
 
   }
 
-  onIdInput(value: string) {
-    this.inputForm = {
-      ...this.inputForm,
-      id: {
-        ...this.inputForm.id,
-        value: value,
-        warningMessage: 'Please Duplicate Check Your Id',
-        warningMessageVisible: true
-      }
-    };
-  }
 
   onCheckPassword(value: string) {
     this.availablePassword = value === this.inputForm.password.value;
@@ -226,6 +238,19 @@ export default class Signup extends Vue {
       ...this.inputForm,
       passwordConfirm: {
         ...this.inputForm.passwordConfirm,
+        value: value,
+        warningMessageVisible: !this.availablePassword,
+        closed: this.availablePassword
+      }
+    }
+  }
+
+  onCheckId(value: string) {
+    this.availableId = false;
+    this.inputForm = {
+      ...this.inputForm,
+      id: {
+        ...this.inputForm.id,
         value: value,
         warningMessageVisible: !this.availablePassword
       }
@@ -237,7 +262,7 @@ export default class Signup extends Vue {
       ...this.inputForm,
       [keyName]: {
         ...this.inputForm[keyName],
-        warningMessageVisible: false
+        closed: true
       }
     }
   }

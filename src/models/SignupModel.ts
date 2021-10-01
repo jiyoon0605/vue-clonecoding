@@ -1,17 +1,17 @@
-
-enum Gender{
-    Non,Male,FeMale
+enum Gender {
+    Non, Male, FeMale
 }
 
 export interface SignupFormData {
-    [index:string]:any,
+    [index: string]: any,
+
     username: string,
     id: string,
     password: string,
     isStudent: boolean,
     admissionDay: Date,
     graduatedDay: Date,
-    checkedPurPose:string[],
+    purposes: string[],
     gender: Gender,
 }
 
@@ -21,6 +21,13 @@ export interface UserPurposeResponse {
 }
 
 export interface SignupResult {
-    result:"success"|"failure",
-    message:string
+    result: "success" | "failure",
+    message: string
+}
+
+export interface WarningMessageData {
+    keyName: string,
+    visible: boolean,
+    message: string,
+    closed: boolean,
 }
