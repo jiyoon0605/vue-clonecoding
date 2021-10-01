@@ -14,10 +14,10 @@
       <el-form-item>
 
         <el-button type="text" class="textBtn">{{ $tc('findPassword') }}</el-button>
-
       </el-form-item>
+      <WarningMessage :visible="warningMessageVisible" :message="$tc('signInError')"></WarningMessage>
       <el-form-item>
-        <el-button class="textBtn" @click="onSubmit">{{ $tc('signIn') }}</el-button>
+        <el-button v-loading="isLoading" class="textBtn" @click="onSubmit">{{ $tc('signIn') }}</el-button>
       </el-form-item>
     </el-form>
     <div>
@@ -47,11 +47,12 @@ import {Component, Vue, Watch} from "vue-property-decorator";
 import EmailInput from "@/components/inputs/IdInput.vue";
 import IconText from '@/components/icon/IconText.vue';
 import PasswordInput from '@/components/inputs/passwordInput.vue';
-import {submitForm} from '@/models/SigninModel';
 import {authentication} from '@/api/SigninApi'
+import WarningMessage from '@/components/message/WarningMessage.vue';
 
 @Component({
              components: {
+               WarningMessage,
                PasswordInput,
                IconText,
                EmailInput,
@@ -79,11 +80,24 @@ export default class Signup extends Vue {
     id: '',
     password: ''
   }
+  warningMessageVisible = false;
+  isLoading = false;
 
+  mounted() {
+    this.$root.$i18n.locale = this.$route.params.lang;
+  }
 
   get currentLang() {
     const {lang} = this.$route.params;
     return lang;
+  }
+
+  get submitData() {
+    return {
+      userId: this.inputForm.id,
+      password: this.inputForm.password,
+      language: this.$route.params.lang
+    }
   }
 
   @Watch('$route')
@@ -96,13 +110,22 @@ export default class Signup extends Vue {
   }
 
   onSubmit() {
-    const submitData: submitForm = {
-      userId: this.inputForm.id,
-      password: this.inputForm.password,
-      language: this.$route.params.lang
-    }
+    console.log(this.$root.$i18n.locale)
+    this.isLoading = true;
+    authentication(this.submitData)
+        .then(({data}) => {
+          this.isLoading = false;
+          if (data.success) {
+            this.$message({
+                            message: 'Congrats, this is a success message.',
+                            type: 'success'
+                          });
+            this.warningMessageVisible = false;
+          } else {
+            this.warningMessageVisible = true;
+          }
 
-    authentication(submitData);
+        })
   }
 
 

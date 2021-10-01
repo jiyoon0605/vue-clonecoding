@@ -9,8 +9,12 @@ const routes: RouteConfig[] = [
         name: 'SignIn',
         path: '/:lang',
         component: Signup,
-        props: true
+        props: true,
     },
+    {
+        path: '/',
+        redirect: '/en'
+    }
 ];
 
 
