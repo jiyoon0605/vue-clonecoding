@@ -21,7 +21,7 @@ export default class IdInput extends Vue {
       return;
     }
 
-    this.$emit("onChangeIdInput", value);
+    this.$emit("onChangeInput", value);
   }
 
 }

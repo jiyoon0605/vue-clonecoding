@@ -8,7 +8,8 @@ const zh = {
     findPasswordMessage: 'Find Your Password',
     emailInput: 'Please enter your E-mail',
     find: 'Find',
-    signInError: '未注册的 ID 或密码错误。请查证后重新输入。'
+    signInError: '未注册的 ID 或密码错误。请查证后重新输入。',
+    emailWarning: 'This value is not valid.'
 }
 
 export default zh;

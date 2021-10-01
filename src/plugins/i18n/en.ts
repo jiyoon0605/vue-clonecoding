@@ -8,7 +8,8 @@ const en = {
     findPasswordMessage: 'Find Your Password',
     emailInput: 'Please enter your E-mail',
     find: 'Find',
-    signInError:'Unregistered ID or wrong password.'
+    signInError: 'Unregistered ID or wrong password.',
+    emailWarning: 'This value is not valid.'
 }
 
 export default en;

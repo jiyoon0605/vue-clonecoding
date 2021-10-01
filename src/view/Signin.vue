@@ -4,7 +4,7 @@
     <el-form>
       <h2>Sign In</h2>
       <el-form-item :label="$tc('id')">
-        <EmailInput :input-value="inputForm.id" @onChangeIdInput="onChangeId"/>
+        <EmailInput :input-value="inputForm.id" @onChangeInput="onChangeId"/>
       </el-form-item>
       <el-form-item :label="$tc('password')">
         <PasswordInput :input-value="inputForm.password" @onChangePasswordInput="onChangePassword"/>
