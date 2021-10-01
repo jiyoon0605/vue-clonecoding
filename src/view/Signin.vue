@@ -1,8 +1,6 @@
 <template>
   <el-container direction="vertical" class="login">
-    <el-header>
-      <router-link :to="{name:'SignIn',params:{lang:$route.params.lang}}"> Safety R3</router-link>
-    </el-header>
+    <Logo></Logo>
     <el-form>
       <h2>Sign In</h2>
       <el-form-item :label="$tc('id')">
@@ -13,7 +11,8 @@
       </el-form-item>
       <el-form-item>
 
-        <el-button type="text" class="textBtn">{{ $tc('findPassword') }}</el-button>
+        <router-link :to="{name:'FindPassword',params:{lang:$route.params.lang}}">{{ $tc('findPassword') }}
+        </router-link>
       </el-form-item>
       <WarningMessage :visible="warningMessageVisible" :message="$tc('signInError')"></WarningMessage>
       <el-form-item>
@@ -49,9 +48,11 @@ import IconText from '@/components/icon/IconText.vue';
 import PasswordInput from '@/components/inputs/passwordInput.vue';
 import {authentication} from '@/api/SigninApi'
 import WarningMessage from '@/components/message/WarningMessage.vue';
+import Logo from '@/components/logo/logo.vue';
 
 @Component({
              components: {
+               Logo,
                WarningMessage,
                PasswordInput,
                IconText,
