@@ -1,8 +1,8 @@
 import client from '@/api/index';
-import {SignInResponse, SubmitForm} from '@/models/SigninModel';
+import {ApiResponse, SignInSubmitForm} from '@/models/Model';
 import {AxiosResponse} from 'axios';
 
 
-export function authentication(data: SubmitForm): Promise<AxiosResponse<SignInResponse>> {
+export function authentication(data: SignInSubmitForm): Promise<AxiosResponse<ApiResponse>> {
     return client.post(`/1.0/auth?language=${data.language}`, data)
 }

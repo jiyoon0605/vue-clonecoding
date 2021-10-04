@@ -1,7 +1,7 @@
 <template>
   <el-input
       class="id-input"
-      placeholder="Please input"
+      :disabled="disable"
       :value="inputValue"
       @input="onChangeInput"
       clearable>
@@ -15,6 +15,7 @@ import {Prop} from 'vue-property-decorator';
 @Component
 export default class IdInput extends Vue {
   @Prop({default: () => ''}) private readonly inputValue: string;
+  @Prop({default: () => false}) private readonly disable: boolean;
 
   onChangeInput(value: string) {
     if (this.inputValue.length >= 50) {

@@ -93,17 +93,17 @@ export default class Signup extends Vue {
     return lang;
   }
 
-  get submitData() {
+  @Watch('$route')
+  protected watchRoute() {
+    this.$root.$i18n.locale = this.$route.params.lang;
+  }
+
+  getSubmitData() {
     return {
       userId: this.inputForm.id,
       password: this.inputForm.password,
       language: this.$route.params.lang
     }
-  }
-
-  @Watch('$route')
-  protected watchRoute() {
-    this.$root.$i18n.locale = this.$route.params.lang;
   }
 
   onChangeLanguage(value: string) {
@@ -113,7 +113,7 @@ export default class Signup extends Vue {
   onSubmit() {
     console.log(this.$root.$i18n.locale)
     this.isLoading = true;
-    authentication(this.submitData)
+    authentication(this.getSubmitData())
         .then(({data}) => {
           this.isLoading = false;
           if (data.success) {

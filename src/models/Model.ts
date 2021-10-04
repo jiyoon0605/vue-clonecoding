@@ -1,10 +1,14 @@
-export interface SubmitForm {
+export interface SignInSubmitForm {
     language: string,
     userId: string,
     password: string
 }
+export interface FindPasswordSubmitForm{
+    language: string,
+    email:string,
+}
 
-export interface SignInResponse {
+export interface ApiResponse {
     data: any;
     success: boolean;
     errCode: number;
