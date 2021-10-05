@@ -7,7 +7,8 @@
         <EmailInput :input-value="inputForm.id" @onChangeInput="onChangeId"/>
       </el-form-item>
       <el-form-item :label="$tc('password')">
-        <PasswordInput :input-value="inputForm.password" @onChangePasswordInput="onChangePassword"/>
+        <PasswordInput :input-value="inputForm.password" @onChangePasswordInput="onChangePassword"
+                       @keyup.enter.native="onSubmit"/>
       </el-form-item>
       <el-form-item>
 
@@ -35,7 +36,7 @@
 <script lang="ts">
 
 import {Component, Vue, Watch} from "vue-property-decorator";
-import EmailInput from "@/components/inputs/IdInput.vue";
+import EmailInput from "@/components/inputs/EmailInput.vue";
 import IconText from '@/components/icon/IconText.vue';
 import PasswordInput from '@/components/inputs/passwordInput.vue';
 import {authentication} from '@/api/SigninApi'

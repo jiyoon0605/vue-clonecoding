@@ -4,7 +4,8 @@
     <h3>{{ $tc('findPasswordMessage') }}</h3>
     <el-form>
       <el-form-item :label="$tc('emailInput')">
-        <IdInput :input-value="email" @onChangeInput="onEmailChange" :disable="inputDisable"/>
+        <EmailInput :input-value="email" @onChangeInput="onEmailChange" :disable="inputDisable"
+                    @keyup.enter.native="onSubmit"/>
         <WarningMessage :visible="warningMessageVisible" :message="$tc('emailWarning')"></WarningMessage>
       </el-form-item>
       <div v-if="inputDisable">{{ successMessage }}</div>
@@ -21,14 +22,14 @@
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
 import Logo from '@/components/logo/logo.vue';
-import IdInput from '@/components/inputs/IdInput.vue';
+import EmailInput from '@/components/inputs/EmailInput.vue';
 import WarningMessage from '@/components/message/WarningMessage.vue';
 import {FindPasswordSubmitForm} from '@/models/Model';
 import {findPassword} from '@/api/FindPasswordApi';
 import LanguageSelector from '@/components/selector/LanguageSelector.vue';
 
 @Component({
-             components: {LanguageSelector, WarningMessage, IdInput, Logo}
+             components: {LanguageSelector, WarningMessage, EmailInput, Logo}
            })
 export default class FindPassword extends Vue {
   email: string = '';
