@@ -15,6 +15,7 @@
         </el-form-item>
       </div>
     </el-form>
+    <LanguageSelector></LanguageSelector>
   </el-container>
 </template>
 <script lang="ts">
@@ -24,9 +25,10 @@ import IdInput from '@/components/inputs/IdInput.vue';
 import WarningMessage from '@/components/message/WarningMessage.vue';
 import {FindPasswordSubmitForm} from '@/models/Model';
 import {findPassword} from '@/api/FindPasswordApi';
+import LanguageSelector from '@/components/selector/LanguageSelector.vue';
 
 @Component({
-             components: {WarningMessage, IdInput, Logo}
+             components: {LanguageSelector, WarningMessage, IdInput, Logo}
            })
 export default class FindPassword extends Vue {
   email: string = '';

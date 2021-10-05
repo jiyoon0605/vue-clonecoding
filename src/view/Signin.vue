@@ -25,15 +25,7 @@
       <span>
          <i class="el-icon-picture-outline-round"></i>
         <span>
-          <el-select :value="currentLang" @change="onChangeLanguage">
-          <el-option
-              v-for="({label,value},index) of languages"
-              :key="index"
-              :label="label"
-              :value="value"
-          >
-          </el-option>
-        </el-select>
+          <LanguageSelector></LanguageSelector>
         </span>
       </span>
     </div>
@@ -49,9 +41,11 @@ import PasswordInput from '@/components/inputs/passwordInput.vue';
 import {authentication} from '@/api/SigninApi'
 import WarningMessage from '@/components/message/WarningMessage.vue';
 import Logo from '@/components/logo/logo.vue';
+import LanguageSelector from '@/components/selector/LanguageSelector.vue';
 
 @Component({
              components: {
+               LanguageSelector,
                Logo,
                WarningMessage,
                PasswordInput,
@@ -60,23 +54,7 @@ import Logo from '@/components/logo/logo.vue';
              }
            })
 export default class Signup extends Vue {
-  languages = [{
-    label: 'Chinese(简体中文)',
-    value: 'zh',
-  },
-    {
-      label: 'English(English)',
-      value: 'en',
-    },
-    {
-      label: 'Japanese(日本語)',
-      value: 'ja',
-    },
-    {
-      label: 'Korean(한국어)',
-      value: 'ko',
-    }
-  ]
+
   inputForm: any = {
     id: '',
     password: ''
@@ -86,11 +64,6 @@ export default class Signup extends Vue {
 
   mounted() {
     this.$root.$i18n.locale = this.$route.params.lang;
-  }
-
-  get currentLang() {
-    const {lang} = this.$route.params;
-    return lang;
   }
 
   @Watch('$route')
@@ -104,10 +77,6 @@ export default class Signup extends Vue {
       password: this.inputForm.password,
       language: this.$route.params.lang
     }
-  }
-
-  onChangeLanguage(value: string) {
-    this.$router.push({name: "SignIn", params: {lang: value}});
   }
 
   onSubmit() {
