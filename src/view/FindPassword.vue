@@ -20,7 +20,7 @@
   </el-container>
 </template>
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import {Component, Vue, Watch} from 'vue-property-decorator';
 import Logo from '@/components/logo/logo.vue';
 import EmailInput from '@/components/inputs/EmailInput.vue';
 import WarningMessage from '@/components/message/WarningMessage.vue';
@@ -38,6 +38,15 @@ export default class FindPassword extends Vue {
   incorrectEmail: boolean = false;
   inputDisable: boolean = false;
   successMessage: string = '';
+
+  mounted() {
+    this.$root.$i18n.locale = this.$route.params.lang;
+  }
+
+  @Watch('$route')
+  protected watchRoute() {
+    this.$root.$i18n.locale = this.$route.params.lang;
+  }
 
   get warningMessageVisible() {
     return !this.invalidEmail
