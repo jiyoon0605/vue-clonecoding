@@ -1,6 +1,6 @@
 <template>
   <el-header>
-    <router-link :to="{name:'SignIn',params:{lang:$route.params.lang}}"> Safety R3</router-link>
+    <router-link :to="{name:'SignIn',params:{lang:this.$route.params.lang}}"> Safety R3</router-link>
   </el-header>
 </template>
 <script lang="ts">

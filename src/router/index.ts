@@ -7,7 +7,7 @@ const routes: RouteConfig[] = [
     {
         name: 'SignIn',
         path: '/sign-in/:lang',
-        component: ()=>import('@/view/Signin.vue'),
+        component: () => import('@/view/Signin.vue'),
         props: true,
     },
     {
@@ -17,7 +17,7 @@ const routes: RouteConfig[] = [
     {
         name: "FindPassword",
         path: "/find-password/:lang",
-        component: ()=>import('@/view/FindPassword.vue'),
+        component: () => import('@/view/FindPassword.vue'),
         props: true
     },
     {

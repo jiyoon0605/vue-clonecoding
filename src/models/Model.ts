@@ -3,9 +3,10 @@ export interface SignInSubmitForm {
     userId: string,
     password: string
 }
-export interface FindPasswordSubmitForm{
+
+export interface FindPasswordSubmitForm {
     language: string,
-    email:string,
+    email: string,
 }
 
 export interface ApiResponse {
