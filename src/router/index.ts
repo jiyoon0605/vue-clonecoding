@@ -1,6 +1,4 @@
 import VueRouter, {RouteConfig} from 'vue-router';
-import Signup from '@/view/Signin.vue';
-import FindPassword from '@/view/FindPassword.vue';
 import Vue from 'vue';
 
 Vue.use(VueRouter);
@@ -9,7 +7,7 @@ const routes: RouteConfig[] = [
     {
         name: 'SignIn',
         path: '/sign-in/:lang',
-        component: Signup,
+        component: ()=>import('@/view/Signin.vue'),
         props: true,
     },
     {
@@ -19,7 +17,7 @@ const routes: RouteConfig[] = [
     {
         name: "FindPassword",
         path: "/find-password/:lang",
-        component: FindPassword,
+        component: ()=>import('@/view/FindPassword.vue'),
         props: true
     },
     {
