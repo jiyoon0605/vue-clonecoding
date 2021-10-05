@@ -1,13 +1,16 @@
 <template>
-  <el-select :value="currentLang" @change="onChangeLanguage">
-    <el-option
-        v-for="({label,value},index) of languages"
-        :key="index"
-        :label="label"
-        :value="value"
-    >
-    </el-option>
-  </el-select>
+  <div>
+    <el-select :value="currentLang" @change="onChangeLanguage">
+      <el-option
+          v-for="({label,value},index) of languages"
+          :key="index"
+          :label="label"
+          :value="value"
+      >
+      </el-option>
+    </el-select>
+  </div>
+
 </template>
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';

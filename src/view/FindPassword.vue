@@ -56,14 +56,14 @@ export default class FindPassword extends Vue {
   }
 
   checkEmail() {
-    const re = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+    const re = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i;
     return re.test(this.email)
   }
 
   onSubmit() {
-    // if (!this.checkEmail()) {
-    //   return;
-    // }
+    if (!this.checkEmail()) {
+      return;
+    }
     findPassword(this.getSubmitData()).then(({data}) => {
       if (data.success) {
         this.inputDisable = true;
@@ -74,10 +74,7 @@ export default class FindPassword extends Vue {
       }
     })
   }
-}/*data:
-message: "Further instructions for your password initialization have been sent to your e-mail address."
-title: "Confirm"
-userId: "jylee@crscube.co.kr"*/
+}
 </script>
 
 <style>
