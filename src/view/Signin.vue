@@ -14,7 +14,7 @@
         <router-link :to="{name:'FindPassword',params:{lang:$route.params.lang}}">{{ $tc('findPassword') }}
         </router-link>
       </el-form-item>
-      <WarningMessage :visible="warningMessageVisible" :message="$tc('signInError')"></WarningMessage>
+      <WarningMessage :visible="warningMessageVisible" :message="singInErrorMessage"></WarningMessage>
       <el-form-item>
         <el-button v-loading="isLoading" class="textBtn" @click="onSubmit">{{ $tc('signIn') }}</el-button>
       </el-form-item>
@@ -61,6 +61,7 @@ export default class Signup extends Vue {
   }
   warningMessageVisible = false;
   isLoading = false;
+  singInErrorMessage = ""
 
   mounted() {
     this.$root.$i18n.locale = this.$route.params.lang;
@@ -79,8 +80,11 @@ export default class Signup extends Vue {
     }
   }
 
+
   onSubmit() {
-    console.log(this.$root.$i18n.locale)
+
+    (this as any).$message.closeAll();
+
     this.isLoading = true;
     authentication(this.getSubmitData())
         .then(({data}) => {
@@ -88,14 +92,15 @@ export default class Signup extends Vue {
           if (data.success) {
             this.$message({
                             message: 'Congrats, this is a success message.',
-                            type: 'success'
+                            type: 'success',
                           });
             this.warningMessageVisible = false;
           } else {
+            this.singInErrorMessage = data.errMsg
             this.warningMessageVisible = true;
           }
-
         })
+
   }
 
 

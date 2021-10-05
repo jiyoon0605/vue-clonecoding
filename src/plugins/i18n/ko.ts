@@ -8,7 +8,6 @@ const ko = {
     findPasswordMessage: 'Find Your Password',
     emailInput: 'Please enter your E-mail',
     find: 'Find',
-    signInError: '등록되지 않은 아이디이거나, 비밀번호가 올바르지 않습니다. 확인 후 다시 입력 부탁드립니다.',
     emailWarning: 'This value is not valid.'
 }
 
