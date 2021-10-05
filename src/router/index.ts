@@ -1,5 +1,6 @@
 import VueRouter, {RouteConfig} from 'vue-router';
 import Vue from 'vue';
+import i18n from '@/plugins/i18n';
 
 Vue.use(VueRouter);
 
@@ -31,6 +32,11 @@ const router = new VueRouter({
                                  mode: "history",
                                  routes
                              });
+
+router.beforeEach((to, from, next) => {
+    i18n.locale = to.params.lang;
+    next();
+})
 
 
 export default router;

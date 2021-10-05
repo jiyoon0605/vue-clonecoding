@@ -17,7 +17,7 @@
       </el-form-item>
       <WarningMessage :visible="warningMessageVisible" :message="singInErrorMessage"></WarningMessage>
       <el-form-item>
-        <el-button v-loading="isLoading" class="textBtn" @click="onSubmit">{{ $tc('signIn') }}</el-button>
+        <SubmitButton @onSubmit="onSubmit" :message="$tc('signIn')"></SubmitButton>
       </el-form-item>
     </el-form>
     <div>
@@ -33,7 +33,7 @@
 
 <script lang="ts">
 
-import {Component, Vue, Watch} from "vue-property-decorator";
+import {Component, Vue} from "vue-property-decorator";
 import EmailInput from "@/components/inputs/EmailInput.vue";
 import IconText from '@/components/icon/IconText.vue';
 import PasswordInput from '@/components/inputs/PasswordInput.vue';
@@ -41,9 +41,11 @@ import {authentication} from '@/api/SigninApi'
 import WarningMessage from '@/components/message/WarningMessage.vue';
 import Logo from '@/components/logo/logo.vue';
 import LanguageSelector from '@/components/selector/LanguageSelector.vue';
+import SubmitButton from '@/components/button/SubmitButton.vue';
 
 @Component({
              components: {
+               SubmitButton,
                LanguageSelector,
                Logo,
                WarningMessage,
@@ -62,15 +64,6 @@ export default class Signup extends Vue {
   isLoading = false;
   singInErrorMessage = ""
 
-  mounted() {
-    this.$root.$i18n.locale = this.$route.params.lang;
-  }
-
-  @Watch('$route')
-  protected watchRoute() {
-    this.$root.$i18n.locale = this.$route.params.lang;
-  }
-
   getSubmitData() {
     return {
       userId: this.inputForm.id,
@@ -78,7 +71,6 @@ export default class Signup extends Vue {
       language: this.$route.params.lang
     }
   }
-
 
   onSubmit() {
 

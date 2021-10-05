@@ -5,6 +5,7 @@
     <el-form>
       <el-form-item :label="$tc('emailInput')">
         <EmailInput :input-value="email" @onChangeInput="onEmailChange" :disable="inputDisable"
+                    @submit.native.prevent
                     @keyup.enter.native="onSubmit"/>
         <WarningMessage :visible="warningMessageVisible" :message="$tc('emailWarning')"></WarningMessage>
       </el-form-item>
@@ -12,7 +13,7 @@
       <div v-else>
         <WarningMessage :visible="incorrectEmail" :message="errorMessage"></WarningMessage>
         <el-form-item>
-          <el-button @click="onSubmit">{{ $tc('find') }}</el-button>
+          <SubmitButton :message="$tc('find')" @onSubmit="onSubmit"></SubmitButton>
         </el-form-item>
       </div>
     </el-form>
@@ -20,16 +21,17 @@
   </el-container>
 </template>
 <script lang="ts">
-import {Component, Vue, Watch} from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator';
 import Logo from '@/components/logo/logo.vue';
 import EmailInput from '@/components/inputs/EmailInput.vue';
 import WarningMessage from '@/components/message/WarningMessage.vue';
 import {FindPasswordSubmitForm} from '@/models/Model';
 import {findPassword} from '@/api/FindPasswordApi';
 import LanguageSelector from '@/components/selector/LanguageSelector.vue';
+import SubmitButton from '@/components/button/SubmitButton.vue';
 
 @Component({
-             components: {LanguageSelector, WarningMessage, EmailInput, Logo}
+             components: {SubmitButton, LanguageSelector, WarningMessage, EmailInput, Logo}
            })
 export default class FindPassword extends Vue {
   email: string = '';
@@ -38,15 +40,6 @@ export default class FindPassword extends Vue {
   incorrectEmail: boolean = false;
   inputDisable: boolean = false;
   successMessage: string = '';
-
-  mounted() {
-    this.$root.$i18n.locale = this.$route.params.lang;
-  }
-
-  @Watch('$route')
-  protected watchRoute() {
-    this.$root.$i18n.locale = this.$route.params.lang;
-  }
 
   get warningMessageVisible() {
     return !this.invalidEmail
