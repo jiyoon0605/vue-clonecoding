@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <span>
     <el-select :value="currentLang" @change="onChangeLanguage">
       <el-option
           v-for="({label,value},index) of languages"
@@ -9,7 +9,7 @@
       >
       </el-option>
     </el-select>
-  </div>
+  </span>
 
 </template>
 <script lang="ts">

@@ -16,13 +16,14 @@ import {Prop} from 'vue-property-decorator';
 export default class EmailInput extends Vue {
   @Prop({default: () => ''}) private readonly inputValue: string;
   @Prop({default: () => false}) private readonly disable: boolean;
+  MAX_LENGTH = 50
 
   onChangeInput(value: string) {
-    if (this.inputValue.length >= 50) {
-      return;
-    }
+    this.$emit("onChangeInput",
+               this.inputValue.length >= this.MAX_LENGTH ?
+                   value.substr(0, this.MAX_LENGTH) :
+                   value);
 
-    this.$emit("onChangeInput", value);
   }
 
 }

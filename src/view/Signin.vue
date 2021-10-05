@@ -25,9 +25,7 @@
       <IconText icon-name="el-icon-question" :message="$tc('help')"></IconText>
       <span>
          <i class="el-icon-picture-outline-round"></i>
-        <span>
           <LanguageSelector></LanguageSelector>
-        </span>
       </span>
     </div>
   </el-container>
