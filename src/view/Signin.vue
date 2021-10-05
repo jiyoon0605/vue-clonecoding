@@ -38,7 +38,7 @@
 import {Component, Vue, Watch} from "vue-property-decorator";
 import EmailInput from "@/components/inputs/EmailInput.vue";
 import IconText from '@/components/icon/IconText.vue';
-import PasswordInput from '@/components/inputs/passwordInput.vue';
+import PasswordInput from '@/components/inputs/PasswordInput.vue';
 import {authentication} from '@/api/SigninApi'
 import WarningMessage from '@/components/message/WarningMessage.vue';
 import Logo from '@/components/logo/logo.vue';
