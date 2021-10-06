@@ -1,34 +1,40 @@
 <template>
-  <el-container direction="vertical" class="login">
-    <Logo></Logo>
-    <el-form>
-      <h2>Sign In</h2>
-      <el-form-item :label="$tc('id')">
-        <EmailInput :input-value="inputForm.id" @onChangeInput="onChangeId"/>
-      </el-form-item>
-      <el-form-item :label="$tc('password')">
-        <PasswordInput :input-value="inputForm.password" @onChangePasswordInput="onChangePassword"
-                       @keyup.enter.native="onSubmit"/>
-      </el-form-item>
-      <el-form-item>
+  <div>
+    <SelectSponsorDialogue :visible="dialogVisible"
+                            :sponsors="sponsors"
+                            @onClose="onDialogueClose"></SelectSponsorDialogue>
+    <el-container direction="vertical" class="login">
+      <Logo></Logo>
+      <el-form>
+        <h2>Sign In</h2>
+        <el-form-item :label="$tc('id')">
+          <EmailInput :input-value="inputForm.id" @onChangeInput="onChangeId"/>
+        </el-form-item>
+        <el-form-item :label="$tc('password')">
+          <PasswordInput :input-value="inputForm.password" @onChangePasswordInput="onChangePassword"
+                         @keyup.enter.native="onSubmit"/>
+        </el-form-item>
+        <el-form-item>
 
-        <router-link :to="{name:'FindPassword',params:{lang:$route.params.lang}}">{{ $tc('findPassword') }}
-        </router-link>
-      </el-form-item>
-      <WarningMessage :visible="warningMessageVisible" :message="singInErrorMessage"></WarningMessage>
-      <el-form-item>
-        <SubmitButton @onSubmit="onSubmit" :message="$tc('signIn')"></SubmitButton>
-      </el-form-item>
-    </el-form>
-    <div>
-      <IconText icon-name="el-icon-s-tools" :message="$tc('system')"></IconText>
-      <IconText icon-name="el-icon-question" :message="$tc('help')"></IconText>
-      <span>
+          <router-link :to="{name:'FindPassword',params:{lang:$route.params.lang}}">{{ $tc('findPassword') }}
+          </router-link>
+        </el-form-item>
+        <WarningMessage :visible="warningMessageVisible" :message="singInErrorMessage"></WarningMessage>
+        <el-form-item>
+          <SubmitButton @onSubmit="onSubmit" :message="$tc('signIn')"></SubmitButton>
+        </el-form-item>
+      </el-form>
+      <div>
+        <IconText icon-name="el-icon-s-tools" :message="$tc('system')"></IconText>
+        <IconText icon-name="el-icon-question" :message="$tc('help')"></IconText>
+        <span>
          <i class="el-icon-picture-outline-round"></i>
           <LanguageSelector></LanguageSelector>
       </span>
-    </div>
-  </el-container>
+      </div>
+    </el-container>
+  </div>
+
 </template>
 
 <script lang="ts">
@@ -42,9 +48,11 @@ import WarningMessage from '@/components/message/WarningMessage.vue';
 import Logo from '@/components/logo/logo.vue';
 import LanguageSelector from '@/components/selector/LanguageSelector.vue';
 import SubmitButton from '@/components/button/SubmitButton.vue';
+import SelectSponsorDialogue from '@/components/dialogue/SelectSponesorDialogue.vue';
 
 @Component({
              components: {
+               SelectSponsorDialogue,
                SubmitButton,
                LanguageSelector,
                Logo,
@@ -62,7 +70,9 @@ export default class Signup extends Vue {
   }
   warningMessageVisible = false;
   isLoading = false;
-  singInErrorMessage = ""
+  singInErrorMessage = "";
+  dialogVisible = false;
+  sponsors = []
 
   getSubmitData() {
     return {
@@ -73,7 +83,6 @@ export default class Signup extends Vue {
   }
 
   onSubmit() {
-
     (this as any).$message.closeAll();
 
     this.isLoading = true;
@@ -86,10 +95,18 @@ export default class Signup extends Vue {
                             type: 'success',
                           });
             this.warningMessageVisible = false;
+            sessionStorage.setItem("token", data.data.token);
+            sessionStorage.setItem('userKey', data.userKey.toString());
+            this.dialogVisible = true;
+            this.sponsors = data.data.sponsorList;
           } else {
             this.singInErrorMessage = data.errMsg
             this.warningMessageVisible = true;
           }
+        })
+        .catch(() => {
+          this.warningMessageVisible = true;
+          this.singInErrorMessage = "network error"
         })
 
   }
@@ -107,6 +124,10 @@ export default class Signup extends Vue {
       ...this.inputForm,
       password: value
     }
+  }
+
+  onDialogueClose() {
+    this.dialogVisible = false;
   }
 }
 

@@ -68,14 +68,18 @@ export default class FindPassword extends Vue {
       return;
     }
     findPassword(this.getSubmitData()).then(({data}) => {
-      if (data.success) {
-        this.inputDisable = true;
-        this.successMessage = data.data.message
-      } else {
-        this.incorrectEmail = true;
-        this.errorMessage = data.errMsg;
-      }
-    })
+                                        if (data.success) {
+                                          this.inputDisable = true;
+                                          this.successMessage = data.data.message
+                                        } else {
+                                          this.incorrectEmail = true;
+                                          this.errorMessage = data.errMsg;
+                                        }
+                                      })
+                                      .catch(() => {
+                                        this.incorrectEmail = true;
+                                        this.errorMessage = "network error"
+                                      })
   }
 }
 </script>
